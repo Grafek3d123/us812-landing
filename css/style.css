@@ -951,18 +951,14 @@ textarea {
     flex-direction: column;
     align-items: center;
     gap: 0.25rem;
-}
-
-.footer__logo {
-    font-family: var(--font-heading);
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--color-gold);
+    margin-bottom: 1rem;
 }
 
 .footer__company {
     font-size: 0.75rem;
     color: var(--color-gray);
+    text-align: center;
+    margin-top: 0.5rem;
 }
 
 .footer__info {
