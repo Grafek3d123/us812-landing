@@ -285,7 +285,12 @@
             <div class="cta__inner">
                 <h2 class="cta__title">Рассчитаем стоимость вашего изделия</h2>
                 <p class="cta__subtitle">Оставьте заявку, и мы свяжемся с вами в течение 30 минут</p>
-                <form class="cta__form" id="contactForm">
+                <form class="cta__form" id="contactForm" action="https://formsubmit.co/jewstudia812@yandex.ru" method="POST">
+                    <!-- FormSubmit hidden fields -->
+                    <input type="hidden" name="_subject" value="Новая заявка с сайта ЮС 812">
+                    <input type="hidden" name="_template" value="table">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
                     <div class="form__group">
                         <input type="text" class="form__input" id="name" name="name" placeholder="Ваше имя" required title="Пожалуйста, введите ваше имя">
                     </div>

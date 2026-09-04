@@ -170,19 +170,42 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            // Here you would normally send the form data to your server
-            // For now, we'll just show the success modal
-            console.log('Form submitted:', {
-                name: name,
-                phone: phone,
-                message: message
+            // Send form to FormSubmit.co (email forwarding service)
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Отправка...';
+            
+            const formData = new FormData(form);
+            
+            fetch('https://formsubmit.co/ajax/jewstudia812@yandex.ru', {
+                method: 'POST',
+                body: formData
+            })
+            .then(function(response) {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(function(data) {
+                if (data.success === 'true' || data.success === true) {
+                    // Show success modal
+                    modal.classList.add('active');
+                    // Reset form
+                    form.reset();
+                } else {
+                    alert('Не удалось отправить заявку. Позвоните нам: +7 (921) 907-71-66');
+                }
+            })
+            .catch(function(error) {
+                console.error('Form submit error:', error);
+                alert('Не удалось отправить заявку. Позвоните нам: +7 (921) 907-71-66');
+            })
+            .finally(function() {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalBtnText;
             });
-            
-            // Show success modal
-            modal.classList.add('active');
-            
-            // Reset form
-            form.reset();
         });
         
         // Close modal
