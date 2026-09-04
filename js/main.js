@@ -171,8 +171,29 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             // Отправка формы на email через FormSubmit.co
-            // (классическая POST-отправка, редирект на thanks.html через _next)
-            form.submit();
+            // fire-and-forget: запрос уходит в фоне, ответ не читается
+            // (редиректы FormSubmit нестабильны, письма при этом доходят)
+            const formData = new FormData(form);
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                mode: 'no-cors'
+            }).catch(function(error) {
+                console.error('Form submit error:', error);
+            });
+            
+            // Показываем окно успеха с небольшой задержкой
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Отправка...';
+            
+            setTimeout(function() {
+                modal.classList.add('active');
+                form.reset();
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalBtnText;
+            }, 1200);
         });
         
         // Close modal
