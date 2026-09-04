@@ -1127,6 +1127,7 @@ textarea {
         display: flex;
         z-index: 1002;
         width: 100%;
+        pointer-events: auto;
     }
     
     .header__nav.active {
@@ -1134,16 +1135,11 @@ textarea {
         transform: translateY(0);
         opacity: 1;
         visibility: visible;
+        pointer-events: auto;
     }
     
     .header__contacts .btn {
         display: none;
-    }
-    
-    /* Overlay when menu is open */
-    .body--menu-open .header {
-        pointer-events: none;
-        opacity: 0.3;
     }
     
     .services__grid {

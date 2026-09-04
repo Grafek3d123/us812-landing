@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const isOpen = burger.classList.contains('active');
             burger.classList.toggle('active');
             nav.classList.toggle('active');
-            document.body.classList.toggle('body--menu-open');
             console.log('Menu toggled, nav active:', nav.classList.contains('active'));
         });
 
@@ -27,19 +26,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.stopPropagation();
                 burger.classList.remove('active');
                 nav.classList.remove('active');
-                document.body.classList.remove('body--menu-open');
                 console.log('Link clicked, menu closing');
             });
         });
         
-        // Close menu when clicking on the gap between header and nav (on the body)
-        // But NOT when clicking on the nav itself
+        // Close menu when clicking outside
         document.body.addEventListener('click', function(e) {
             if (nav.classList.contains('active')) {
                 if (!nav.contains(e.target) && !burger.contains(e.target)) {
                     burger.classList.remove('active');
                     nav.classList.remove('active');
-                    document.body.classList.remove('body--menu-open');
                     console.log('Menu closed by body click');
                 }
             }
@@ -50,11 +46,10 @@ document.addEventListener('DOMContentLoaded', function() {
             if (window.innerWidth >= 768) {
                 burger.classList.remove('active');
                 nav.classList.remove('active');
-                document.body.classList.remove('body--menu-open');
             }
         });
     }
-
+    
     // ===== Cookie Banner =====
     const cookieBanner = document.getElementById('cookieBanner');
     const acceptCookies = document.getElementById('acceptCookies');
