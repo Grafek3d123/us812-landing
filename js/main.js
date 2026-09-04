@@ -177,16 +177,27 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.textContent = 'Отправка...';
             
             const formData = new FormData(form);
+            const payload = {};
+            formData.forEach(function(value, key) {
+                payload[key] = value;
+            });
             
             fetch('https://formsubmit.co/ajax/jewstudia812@yandex.ru', {
                 method: 'POST',
-                body: formData
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(payload)
             })
             .then(function(response) {
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error('HTTP ' + response.status);
                 }
-                return response.json();
+                // Если ответ не JSON — считаем успешным (письмо принято сервером)
+                return response.json().catch(function() {
+                    return { success: 'true' };
+                });
             })
             .then(function(data) {
                 if (data.success === 'true' || data.success === true) {
