@@ -775,6 +775,14 @@ textarea {
     box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.1);
 }
 
+.form__input:invalid:not(:placeholder-shown) {
+    border-color: #ff4444;
+}
+
+.form__input:valid:not(:placeholder-shown) {
+    border-color: var(--color-gold);
+}
+
 .form__input--textarea {
     min-height: 120px;
     resize: vertical;

@@ -120,6 +120,24 @@ document.addEventListener('DOMContentLoaded', function() {
     const modalClose = document.getElementById('modalClose');
 
     if (form && modal) {
+        // Set custom validation messages
+        const nameInput = document.getElementById('name');
+        const phoneInput = document.getElementById('phone');
+        
+        if (nameInput) {
+            nameInput.setCustomValidity('');
+            nameInput.addEventListener('input', function() {
+                this.setCustomValidity('');
+            });
+        }
+        
+        if (phoneInput) {
+            phoneInput.setCustomValidity('');
+            phoneInput.addEventListener('input', function() {
+                this.setCustomValidity('');
+            });
+        }
+        
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -129,14 +147,17 @@ document.addEventListener('DOMContentLoaded', function() {
             const message = document.getElementById('message').value.trim();
             const consent = document.getElementById('consent').checked;
             
-            // Validate
-            if (!name || !phone) {
-                alert('Пожалуйста, заполните все обязательные поля');
+            // Validate name
+            if (!name) {
+                alert('Пожалуйста, введите ваше имя');
+                document.getElementById('name').focus();
                 return;
             }
             
-            if (!consent) {
-                alert('Необходимо дать согласие на обработку персональных данных');
+            // Validate phone
+            if (!phone) {
+                alert('Пожалуйста, введите номер телефона');
+                document.getElementById('phone').focus();
                 return;
             }
             
@@ -144,6 +165,13 @@ document.addEventListener('DOMContentLoaded', function() {
             const phoneRegex = /[\+]?[0-9\s\-\(\)]{7,}/;
             if (!phoneRegex.test(phone)) {
                 alert('Пожалуйста, введите корректный номер телефона');
+                document.getElementById('phone').focus();
+                return;
+            }
+            
+            // Validate consent
+            if (!consent) {
+                alert('Необходимо дать согласие на обработку персональных данных');
                 return;
             }
             
