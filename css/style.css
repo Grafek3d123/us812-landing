@@ -199,14 +199,7 @@ textarea {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-}
-
-.header__logo-text {
-    font-family: var(--font-heading);
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--color-gold);
-    line-height: 1;
+    gap: 0;
 }
 
 .header__logo-sub {
