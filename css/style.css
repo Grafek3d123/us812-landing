@@ -54,6 +54,8 @@
 html {
     scroll-behavior: smooth;
     font-size: 16px;
+    position: relative;
+    z-index: 0;
 }
 
 body {
@@ -62,6 +64,8 @@ body {
     color: var(--color-gray-light);
     line-height: 1.6;
     overflow-x: hidden;
+    position: relative;
+    z-index: 1;
 }
 
 a {
@@ -279,6 +283,7 @@ textarea {
     padding: calc(80px + var(--spacing-xl)) 0 var(--spacing-xl);
     background: linear-gradient(135deg, var(--color-black) 0%, var(--color-dark) 50%, var(--color-black) 100%);
     overflow: hidden;
+    z-index: 10;
 }
 
 .hero__bg {
@@ -289,6 +294,7 @@ textarea {
     bottom: 0;
     background: radial-gradient(ellipse at 70% 50%, rgba(201, 168, 76, 0.08) 0%, transparent 60%);
     pointer-events: none;
+    z-index: 1;
 }
 
 .hero__content {
@@ -790,6 +796,18 @@ textarea {
     border-radius: var(--border-radius-lg);
     overflow: hidden;
     border: 1px solid rgba(201, 168, 76, 0.1);
+    position: relative;
+    z-index: 1;
+}
+
+.contacts__map iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    z-index: 1;
 }
 
 /* ===== Footer ===== */
