@@ -429,9 +429,19 @@ textarea {
     transition: all var(--transition-normal);
     display: flex;
     flex-direction: column;
-    padding-bottom: 0;
-    flex: 1 1 calc(33.333% - var(--spacing-xl));
-    min-width: 280px;
+}
+
+.service-card .btn {
+    margin: 0;
+    padding: 1rem 1.5rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50px;
+    flex-shrink: 0;
+    border-radius: 0;
+    border-top: 1px solid rgba(201, 168, 76, 0.1);
 }
 
 .service-card:hover {
@@ -498,13 +508,14 @@ textarea {
 }
 
 .service-card .btn {
-    margin: 0 var(--spacing-lg) var(--spacing-lg);
+    margin: 0;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 50px;
     flex-shrink: 0;
+    border-radius: 0;
 }
 
 /* ===== Portfolio Section ===== */
@@ -1049,16 +1060,12 @@ textarea {
     }
     
     .service-card {
-        padding-bottom: 0;
+        flex: 1 1 100%;
     }
     
     .service-card .btn {
-        width: 100%;
-        margin: 0 var(--spacing-lg) var(--spacing-lg);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 50px;
+        border-radius: 0;
+        border-top: 1px solid rgba(201, 168, 76, 0.1);
     }
     
     .service-card__title {
