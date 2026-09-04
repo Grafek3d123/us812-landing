@@ -170,53 +170,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            // Send form to FormSubmit.co (email forwarding service)
-            const submitBtn = form.querySelector('button[type="submit"]');
-            const originalBtnText = submitBtn.textContent;
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Отправка...';
-            
-            const formData = new FormData(form);
-            const payload = {};
-            formData.forEach(function(value, key) {
-                payload[key] = value;
-            });
-            
-            fetch('https://formsubmit.co/ajax/jewstudia812@yandex.ru', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            })
-            .then(function(response) {
-                if (!response.ok) {
-                    throw new Error('HTTP ' + response.status);
-                }
-                // Если ответ не JSON — считаем успешным (письмо принято сервером)
-                return response.json().catch(function() {
-                    return { success: 'true' };
-                });
-            })
-            .then(function(data) {
-                if (data.success === 'true' || data.success === true) {
-                    // Show success modal
-                    modal.classList.add('active');
-                    // Reset form
-                    form.reset();
-                } else {
-                    alert('Не удалось отправить заявку. Позвоните нам: +7 (921) 907-71-66');
-                }
-            })
-            .catch(function(error) {
-                console.error('Form submit error:', error);
-                alert('Не удалось отправить заявку. Позвоните нам: +7 (921) 907-71-66');
-            })
-            .finally(function() {
-                submitBtn.disabled = false;
-                submitBtn.textContent = originalBtnText;
-            });
+            // Отправка формы на email через FormSubmit.co
+            // (классическая POST-отправка, редирект на thanks.html через _next)
+            form.submit();
         });
         
         // Close modal

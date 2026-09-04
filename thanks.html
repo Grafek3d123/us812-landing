@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заявка отправлена — ЮС 812</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: #cccccc;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .thanks-card {
+            max-width: 560px;
+            width: 100%;
+            background: #111111;
+            border: 1px solid #222222;
+            border-radius: 12px;
+            padding: 60px 40px;
+            text-align: center;
+        }
+        
+        .thanks-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 30px;
+            border: 2px solid #c9a84c;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .thanks-icon svg {
+            stroke: #c9a84c;
+        }
+        
+        h1 {
+            color: #ffffff;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .thanks-text {
+            color: #999999;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+        
+        .thanks-phone {
+            color: #c9a84c;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 40px;
+        }
+        
+        .thanks-phone a {
+            color: #c9a84c;
+            text-decoration: none;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 14px 40px;
+            background: #c9a84c;
+            color: #0a0a0a;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #d9b95c;
+        }
+        
+        .btn-secondary {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 40px;
+            background: transparent;
+            color: #c9a84c;
+            border: 1px solid #c9a84c;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(201, 168, 76, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="thanks-card">
+        <div class="thanks-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h1>Заявка отправлена!</h1>
+        <p class="thanks-text">Спасибо! Мы получили вашу заявку и свяжемся с вами в течение 30 минут в рабочее время.</p>
+        <p class="thanks-phone">Не хотите ждать? <a href="tel:+79219077166">+7 (921) 907-71-66</a></p>
+        <a href="index.html" class="btn">Вернуться на сайт</a><br>
+        <a href="https://wa.me/79219077166" class="btn-secondary" target="_blank" rel="noopener">Написать в WhatsApp</a>
+    </div>
+</body>
+</html>
