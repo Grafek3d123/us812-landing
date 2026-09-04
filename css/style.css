@@ -416,8 +416,8 @@ textarea {
 }
 
 .services__grid {
-    display: grid;
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-wrap: wrap;
     gap: var(--spacing-xl);
 }
 
@@ -427,6 +427,11 @@ textarea {
     overflow: hidden;
     border: 1px solid rgba(201, 168, 76, 0.1);
     transition: all var(--transition-normal);
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 0;
+    flex: 1 1 calc(33.333% - var(--spacing-xl));
+    min-width: 280px;
 }
 
 .service-card:hover {
@@ -473,6 +478,7 @@ textarea {
 
 .service-card__list {
     padding: var(--spacing-sm) var(--spacing-lg);
+    flex: 1;
 }
 
 .service-card__list li {
@@ -492,8 +498,13 @@ textarea {
 }
 
 .service-card .btn {
-    margin: var(--spacing-sm) var(--spacing-lg) var(--spacing-lg);
-    width: calc(100% - 2rem);
+    margin: 0 var(--spacing-lg) var(--spacing-lg);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50px;
+    flex-shrink: 0;
 }
 
 /* ===== Portfolio Section ===== */
@@ -870,6 +881,52 @@ textarea {
     color: var(--color-gold);
 }
 
+/* ===== Cookie Banner ===== */
+.cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(201, 168, 76, 0.2);
+    padding: var(--spacing-md);
+    z-index: 3000;
+    transform: translateY(100%);
+    transition: transform var(--transition-normal);
+}
+
+.cookie-banner.visible {
+    transform: translateY(0);
+}
+
+.cookie-banner__content {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+}
+
+.cookie-banner__text {
+    color: var(--color-gray-light);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    flex: 1;
+    min-width: 200px;
+}
+
+.cookie-banner__text a {
+    color: var(--color-gold);
+    text-decoration: underline;
+}
+
+.cookie-banner__text a:hover {
+    color: var(--color-gold-light);
+}
+
 /* ===== Modal ===== */
 .modal {
     display: none;
@@ -969,9 +1026,13 @@ textarea {
         visibility: hidden;
         transition: all var(--transition-normal);
         border-bottom: 1px solid rgba(201, 168, 76, 0.1);
+        display: flex;
+        z-index: 1002;
+        width: 100%;
     }
     
     .header__nav.active {
+        display: flex;
         transform: translateY(0);
         opacity: 1;
         visibility: visible;
@@ -979,6 +1040,37 @@ textarea {
     
     .header__contacts .btn {
         display: none;
+    }
+    
+    /* Overlay when menu is open */
+    .body--menu-open .header {
+        pointer-events: none;
+        opacity: 0.3;
+    }
+    
+    .service-card {
+        padding-bottom: 0;
+    }
+    
+    .service-card .btn {
+        width: 100%;
+        margin: 0 var(--spacing-lg) var(--spacing-lg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 50px;
+    }
+    
+    .service-card__title {
+        padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-sm);
+    }
+    
+    .service-card__text {
+        padding: 0 var(--spacing-lg);
+    }
+    
+    .service-card__list {
+        padding: var(--spacing-sm) var(--spacing-lg);
     }
 }
 
@@ -997,7 +1089,11 @@ textarea {
     }
     
     .services__grid {
-        grid-template-columns: repeat(3, 1fr);
+        flex-direction: column;
+    }
+    
+    .service-card {
+        flex: 1 1 100%;
     }
     
     .portfolio__grid {

@@ -11,21 +11,78 @@ document.addEventListener('DOMContentLoaded', function() {
     const nav = document.getElementById('nav');
 
     if (burger && nav) {
-        burger.addEventListener('click', function() {
+        burger.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const isOpen = burger.classList.contains('active');
             burger.classList.toggle('active');
             nav.classList.toggle('active');
+            document.body.classList.toggle('body--menu-open');
+            console.log('Menu toggled, nav active:', nav.classList.contains('active'));
         });
 
         // Close menu on link click
         const navLinks = nav.querySelectorAll('.header__link');
         navLinks.forEach(function(link) {
-            link.addEventListener('click', function() {
+            link.addEventListener('click', function(e) {
+                e.stopPropagation();
                 burger.classList.remove('active');
                 nav.classList.remove('active');
+                document.body.classList.remove('body--menu-open');
+                console.log('Link clicked, menu closing');
             });
+        });
+        
+        // Close menu when clicking on the gap between header and nav (on the body)
+        // But NOT when clicking on the nav itself
+        document.body.addEventListener('click', function(e) {
+            if (nav.classList.contains('active')) {
+                if (!nav.contains(e.target) && !burger.contains(e.target)) {
+                    burger.classList.remove('active');
+                    nav.classList.remove('active');
+                    document.body.classList.remove('body--menu-open');
+                    console.log('Menu closed by body click');
+                }
+            }
+        });
+        
+        // Close menu on window resize (if desktop)
+        window.addEventListener('resize', function() {
+            if (window.innerWidth >= 768) {
+                burger.classList.remove('active');
+                nav.classList.remove('active');
+                document.body.classList.remove('body--menu-open');
+            }
         });
     }
 
+    // ===== Cookie Banner =====
+    const cookieBanner = document.getElementById('cookieBanner');
+    const acceptCookies = document.getElementById('acceptCookies');
+    
+    // Check if user already accepted cookies
+    if (!localStorage.getItem('cookiesAccepted')) {
+        // Show cookie banner after a short delay
+        setTimeout(function() {
+            if (cookieBanner) {
+                cookieBanner.classList.add('visible');
+            }
+        }, 1000);
+    }
+    
+    // Accept cookies
+    if (acceptCookies) {
+        acceptCookies.addEventListener('click', function() {
+            localStorage.setItem('cookiesAccepted', 'true');
+            if (cookieBanner) {
+                cookieBanner.classList.remove('visible');
+            }
+            console.log('Cookies accepted');
+            
+            // Here you can enable Yandex.Metrika if it was disabled
+            // enableMetrika();
+        });
+    }
+    
     // ===== Smooth Scroll =====
     const scrollButtons = document.querySelectorAll('[data-scroll]');
     scrollButtons.forEach(function(btn) {
