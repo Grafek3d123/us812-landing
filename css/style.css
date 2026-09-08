@@ -693,6 +693,29 @@ textarea {
     line-height: 1.6;
 }
 
+.how-we-work__master {
+    margin-top: var(--spacing-3xl);
+    text-align: center;
+}
+
+.how-we-work__master img {
+    max-width: 600px;
+    width: 100%;
+    height: auto;
+    border-radius: var(--border-radius-lg);
+    margin: 0 auto var(--spacing-lg);
+    display: block;
+    border: 1px solid rgba(201, 168, 76, 0.2);
+}
+
+.how-we-work__master-text {
+    color: var(--color-gray);
+    font-size: 1rem;
+    line-height: 1.7;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
 /* ===== Reviews Section ===== */
 .reviews {
     padding: var(--spacing-3xl) 0;
