@@ -728,6 +728,7 @@ textarea {
     gap: var(--spacing-lg);
 }
 
+/* Текстовые карточки отзывов (fallback) */
 .review-card {
     background: var(--color-dark-light);
     padding: var(--spacing-xl);
@@ -797,6 +798,43 @@ textarea {
     color: var(--color-black);
     font-weight: 700;
     font-size: 1.1rem;
+}
+
+/* Карточки-скриншоты (реальные отзывы) */
+.review-card--screenshot {
+    border: none;
+    background: transparent;
+    padding: 0;
+}
+
+.review-card__screenshot-wrapper {
+    background: var(--color-dark-light);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-md);
+    border: 1px solid rgba(201, 168, 76, 0.15);
+    transition: all var(--transition-normal);
+}
+
+.review-card__screenshot-wrapper:hover {
+    border-color: var(--color-gold);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(201, 168, 76, 0.1);
+}
+
+.review-card__screenshot-wrapper img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--border-radius);
+    display: block;
+}
+
+.review-card__screenshot-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: var(--spacing-sm);
+    font-size: 0.8rem;
+    color: var(--color-gray);
 }
 
 /* Модификаторы для разных типов отзывов */
