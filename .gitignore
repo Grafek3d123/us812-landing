@@ -9,4 +9,4 @@ logos.html
 test-images.html
 
 # Исходники фото и интервью
-assets/images/aboutMaster/
+assets/images/aboutMaster/*.md
