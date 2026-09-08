@@ -755,6 +755,88 @@ textarea {
     font-size: 0.9rem;
 }
 
+.review-card__author-meta {
+    color: var(--color-gray);
+    font-size: 0.8rem;
+    margin-top: 2px;
+}
+
+.review-card__source {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: var(--spacing-md);
+    font-size: 0.8rem;
+    color: var(--color-gray);
+}
+
+.review-card__source-icon {
+    display: flex;
+    align-items: center;
+}
+
+.review-card__author-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: var(--spacing-md);
+}
+
+.review-card__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-gold), var(--color-gold-dark));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.avatar-letter {
+    color: var(--color-black);
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+/* Модификаторы для разных типов отзывов */
+.review-card--yandex {
+    border-left: 3px solid #FC3F1D;
+}
+
+.review-card--yandex .review-card__source-icon svg {
+    fill: #FC3F1D;
+}
+
+.review-card--email {
+    border-left: 3px solid #888;
+}
+
+/* Кнопка перехода на Яндекс.Карты */
+.reviews__cta {
+    text-align: center;
+    margin-top: var(--spacing-xl);
+}
+
+.reviews__yandex-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: transparent;
+    border: 1px solid rgba(252, 63, 29, 0.5);
+    border-radius: var(--border-radius);
+    color: #FC3F1D;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all var(--transition-fast);
+}
+
+.reviews__yandex-btn:hover {
+    background: rgba(252, 63, 29, 0.1);
+    border-color: #FC3F1D;
+}
+
 /* ===== CTA / Form Section ===== */
 .cta {
     padding: var(--spacing-3xl) 0;
