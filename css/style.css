@@ -342,9 +342,6 @@ textarea {
 .hero__whatsapp {
     background: #0077FF;
     color: white;
-<<<<<<< HEAD
-    flex: 1 1 auto;
-    min-width: 200px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -356,16 +353,37 @@ textarea {
     text-transform: uppercase;
     letter-spacing: 0.5px;
     gap: 0.5rem;
-=======
+    width: 100%;
+}
+
+.hero__cta .btn--gold {
+    width: 100%;
 }
 
 .hero__whatsapp:hover {
     background: #0055CC;
->>>>>>> 4637f92b47b7f320ee43696a4341b94f5702956c
 }
 
-.hero__whatsapp:hover {
-    background: #0055CC;
+.hero-triggers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    color: var(--color-gray);
+    font-size: 0.85rem;
+    margin-top: var(--spacing-md);
+    align-items: center;
+}
+
+.hero-triggers span {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.hero-triggers span:nth-child(2),
+.hero-triggers span:nth-child(4) {
+    color: var(--color-gold);
+    opacity: 0.5;
 }
 
 .hero__features {
@@ -626,6 +644,115 @@ textarea {
     border-radius: 0;
 }
 
+/* ===== Remote Orders Section ===== */
+.remote-orders {
+    padding: var(--spacing-3xl) 0;
+    background: var(--color-dark);
+}
+
+.remote-cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-3xl);
+}
+
+.remote-card {
+    background: rgba(201, 168, 76, 0.05);
+    border: 1px solid rgba(201, 168, 76, 0.15);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-xl);
+    transition: all var(--transition-normal);
+}
+
+.remote-card:hover {
+    border-color: var(--color-gold);
+    transform: translateY(-4px);
+}
+
+.remote-card__icon {
+    margin-bottom: var(--spacing-md);
+}
+
+.remote-card__title {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-gold);
+    margin-bottom: var(--spacing-sm);
+}
+
+.remote-card__text {
+    color: var(--color-gray-light);
+    line-height: 1.6;
+}
+
+.remote-steps {
+    margin-bottom: var(--spacing-3xl);
+}
+
+.remote-steps__title {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-gold);
+    margin-bottom: var(--spacing-xl);
+    text-align: center;
+}
+
+.remote-steps__list {
+    counter-reset: step-counter;
+    list-style: none;
+    padding: 0;
+}
+
+.remote-steps__list li {
+    position: relative;
+    padding: var(--spacing-md) var(--spacing-md) var(--spacing-md) 4rem;
+    margin-bottom: var(--spacing-md);
+    background: rgba(201, 168, 76, 0.03);
+    border: 1px solid rgba(201, 168, 76, 0.1);
+    border-radius: var(--border-radius);
+    color: var(--color-gray-light);
+    line-height: 1.6;
+    counter-increment: step-counter;
+}
+
+.remote-steps__list li::before {
+    content: counter(step-counter);
+    position: absolute;
+    left: var(--spacing-md);
+    top: var(--spacing-md);
+    width: 2.5rem;
+    height: 2.5rem;
+    background: var(--color-gold);
+    color: var(--color-black);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.remote-steps__list li strong {
+    color: var(--color-gold);
+}
+
+.remote-cta {
+    text-align: center;
+    padding: var(--spacing-2xl);
+    background: rgba(201, 168, 76, 0.05);
+    border: 1px solid rgba(201, 168, 76, 0.2);
+    border-radius: var(--border-radius-lg);
+}
+
+.remote-cta__text {
+    color: var(--color-gray-light);
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-lg);
+}
+
 /* ===== Portfolio Section ===== */
 .portfolio {
     padding: var(--spacing-3xl) 0;
@@ -721,6 +848,31 @@ textarea {
 
 .about-master__bio {
     color: var(--color-gray-light);
+}
+
+.about-master__gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-3xl);
+}
+
+.about-master__gallery-item {
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    border: 1px solid rgba(201, 168, 76, 0.1);
+}
+
+.about-master__gallery-item img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    display: block;
+    transition: transform var(--transition-normal);
+}
+
+.about-master__gallery-item img:hover {
+    transform: scale(1.05);
 }
 
 .about-master__name {
@@ -1639,4 +1791,36 @@ textarea {
 .animate-on-scroll.animated {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* ===== Responsive: Remote Orders ===== */
+@media (min-width: 768px) {
+    .remote-cards {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .remote-steps__list li {
+        padding-left: 4.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .remote-steps__list {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+}
+
+/* ===== Responsive: Hero Buttons ===== */
+@media (max-width: 600px) {
+    .hero__cta {
+        flex-direction: column;
+    }
+    
+    .hero__btn--large,
+    .hero__whatsapp {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
 }
