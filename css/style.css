@@ -342,6 +342,7 @@ textarea {
 .hero__whatsapp {
     background: #0077FF;
     color: white;
+<<<<<<< HEAD
     flex: 1 1 auto;
     min-width: 200px;
     display: inline-flex;
@@ -355,6 +356,12 @@ textarea {
     text-transform: uppercase;
     letter-spacing: 0.5px;
     gap: 0.5rem;
+=======
+}
+
+.hero__whatsapp:hover {
+    background: #0055CC;
+>>>>>>> 4637f92b47b7f320ee43696a4341b94f5702956c
 }
 
 .hero__whatsapp:hover {
