@@ -1238,6 +1238,15 @@ textarea {
     background: #006699;
 }
 
+.messenger-btn--vk {
+    background: #0077FF;
+    color: white;
+}
+
+.messenger-btn--vk:hover {
+    background: #0055CC;
+}
+
 .contacts__map {
     height: 350px;
     border-radius: var(--border-radius-lg);
