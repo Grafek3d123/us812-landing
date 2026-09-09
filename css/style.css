@@ -340,16 +340,25 @@ textarea {
 }
 
 .hero__whatsapp {
+    background: #0077FF;
+    color: white;
+    flex: 1 1 auto;
+    min-width: 200px;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
+    padding: 0.875rem 2rem;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-radius: var(--border-radius);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     gap: 0.5rem;
-    color: #25D366;
-    font-weight: 500;
-    transition: all var(--transition-fast);
 }
 
 .hero__whatsapp:hover {
-    color: #128C7E;
+    background: #0055CC;
 }
 
 .hero__features {
@@ -1601,7 +1610,19 @@ textarea {
     animation: fadeIn 0.8s ease-out;
 }
 
-/* ===== Scroll Animations ===== */
+/* ===== Responsive: Hero Buttons ===== */
+@media (max-width: 600px) {
+    .hero__cta {
+        flex-direction: column;
+    }
+    
+    .hero__btn--large,
+    .hero__whatsapp {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+}
 .animate-on-scroll {
     opacity: 0;
     transform: translateY(30px);
