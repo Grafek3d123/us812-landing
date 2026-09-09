@@ -340,12 +340,12 @@ textarea {
 }
 
 .hero__whatsapp {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #25D366;
-    font-weight: 500;
-    transition: all var(--transition-fast);
+    background: #0077FF;
+    color: white;
+}
+
+.hero__whatsapp:hover {
+    background: #0055CC;
 }
 
 .hero__whatsapp:hover {
