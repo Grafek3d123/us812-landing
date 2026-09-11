@@ -6,6 +6,79 @@
 document.addEventListener('DOMContentLoaded', function() {
     'use strict';
 
+    // ===== Yandex.Metrika: цели =====
+    // Метрика грузится асинхронно, поэтому проверка window.ym обязательна:
+    // если счётчик ещё не поднялся (или заблокирован adblock'ом) — молча пропускаем.
+    const METRIKA_ID = 112416476;
+
+    function ymGoal(goal) {
+        try {
+            if (typeof window.ym === 'function') {
+                window.ym(METRIKA_ID, 'reachGoal', goal);
+            }
+        } catch (err) {
+            // счётчик недоступен — на UI не влияет
+        }
+    }
+
+    // Сквозной трекинг контактов и мессенджеров. Делегирование нужно затем,
+    // чтобы цели считались и с кнопок вне формы: шапка, sticky-панель, футер, модалка.
+    const LINK_GOALS = [
+        ['a[href^="tel:"]', 'phone_click'],
+        ['a[href^="mailto:"]', 'email_click'],
+        ['a[href*="vk.com"]', 'vk_click'],
+        ['a[href*="wa.me"]', 'whatsapp_click'],
+        ['a[href*="t.me"]', 'telegram_click']
+    ];
+
+    document.addEventListener('click', function(e) {
+        const link = e.target && e.target.closest ? e.target.closest('a') : null;
+        if (!link) return;
+        for (let i = 0; i < LINK_GOALS.length; i++) {
+            if (link.matches(LINK_GOALS[i][0])) {
+                ymGoal(LINK_GOALS[i][1]);
+                return;
+            }
+        }
+    });
+
+    // ===== UTM (first-touch) =====
+    // Метки сохраняются в sessionStorage и подставляются в скрытые поля формы:
+    // в письме Web3Forms видно, из какой кампании пришёл лид.
+    const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+    let utmStore = {};
+
+    try {
+        utmStore = JSON.parse(sessionStorage.getItem('us812_utm') || '{}');
+        const params = new URLSearchParams(window.location.search);
+        let utmChanged = false;
+        UTM_KEYS.forEach(function(key) {
+            const value = params.get(key);
+            // first-touch: значение с URL пишется только если метка ещё пустая
+            if (value && !utmStore[key]) {
+                utmStore[key] = value;
+                utmChanged = true;
+            }
+        });
+        if (utmChanged) sessionStorage.setItem('us812_utm', JSON.stringify(utmStore));
+    } catch (err) {
+        utmStore = {};
+    }
+
+    function applyUtmToForm(formEl) {
+        UTM_KEYS.forEach(function(key) {
+            if (!utmStore[key]) return;
+            let field = formEl.querySelector('input[name="' + key + '"]');
+            if (!field) {
+                field = document.createElement('input');
+                field.type = 'hidden';
+                field.name = key;
+                formEl.appendChild(field);
+            }
+            field.value = utmStore[key];
+        });
+    }
+
     // ===== Mobile Menu =====
     const burger = document.getElementById('burger');
     const nav = document.getElementById('nav');
@@ -145,6 +218,9 @@ document.addEventListener('DOMContentLoaded', function() {
         btn.addEventListener('click', function() {
             const targetId = this.getAttribute('data-scroll');
             const target = document.getElementById(targetId);
+            // Клик по «Рассчитать стоимость» — микро-цель: показывает, какие кнопки
+            // реально доводят до формы, а какие только уводят по странице.
+            if (targetId === 'form') ymGoal('calc_click');
             if (target) {
                 target.scrollIntoView({
                     behavior: 'smooth',
@@ -176,6 +252,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const modalClose = document.getElementById('modalClose');
 
     if (form && modal) {
+        // Микро-цель «начал заполнять» — нужен, чтобы видеть в воронке,
+        // на каком шаге форма теряёт заявки (показ только при скролле к форме — ложь).
+        let formStarted = false;
+        form.addEventListener('focusin', function() {
+            if (formStarted) return;
+            formStarted = true;
+            ymGoal('form_start');
+        });
+
         // Set custom validation messages
         const nameInput = document.getElementById('name');
         const phoneInput = document.getElementById('phone');
@@ -194,29 +279,37 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
         
+        // Отправка заявки на email через Web3Forms (GitHub Pages не имеет бэкенда).
+        // mode:'no-cors' здесь сознательно НЕ ставим: в этом режиме промис резолвится
+        // на любом HTTP-ответе, и «отказ сервиса» было не отличить от успеха — заявка
+        // молча терялась, а клиент видел «отправлено». Читаем статус и data.success.
+        let submitting = false;
+
         form.addEventListener('submit', function(e) {
             e.preventDefault();
-            
+
+            // Защита от двойного отправления (Enter в поле до блокировки кнопки)
+            if (submitting) return;
+
             // Get form values
             const name = document.getElementById('name').value.trim();
             const phone = document.getElementById('phone').value.trim();
-            const message = document.getElementById('message').value.trim();
             const consent = document.getElementById('consent').checked;
-            
+
             // Validate name
             if (!name) {
                 alert('Пожалуйста, введите ваше имя');
                 document.getElementById('name').focus();
                 return;
             }
-            
+
             // Validate phone
             if (!phone) {
                 alert('Пожалуйста, введите номер телефона');
                 document.getElementById('phone').focus();
                 return;
             }
-            
+
             // Phone validation (simple)
             const phoneRegex = /[\+]?[0-9\s\-\(\)]{7,}/;
             if (!phoneRegex.test(phone)) {
@@ -224,37 +317,90 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('phone').focus();
                 return;
             }
-            
+
             // Validate consent
             if (!consent) {
                 alert('Необходимо дать согласие на обработку персональных данных');
                 return;
             }
-            
-            // Отправка формы на email через FormSubmit.co
-            // fire-and-forget: запрос уходит в фоне, ответ не читается
-            // (редиректы FormSubmit нестабильны, письма при этом доходят)
-            const formData = new FormData(form);
-            fetch(form.action, {
-                method: 'POST',
-                body: formData,
-                mode: 'no-cors'
-            }).catch(function(error) {
-                console.error('Form submit error:', error);
-            });
-            
-            // Показываем окно успеха с небольшой задержкой
+
+            // Поле-ссылка на фото референса (необязательное). Поле в HTML — type="text":
+            // нативная валидация type="url" блокирует сабмит ДО submit-события, и эта
+            // нормализация не успевала выполниться (живой тест 12.09.2026: «Введите URL»
+            // на «vk.com/album123»). Клиенты часто пишут адрес без схемы — если её нет,
+            // молча дописываем https://, иначе форма отбивает заявку из-за необязательного поля.
+            const photoLinkInput = document.getElementById('photoLink');
+            if (photoLinkInput) {
+                let link = photoLinkInput.value.trim();
+                if (link && !/^https?:\/\//i.test(link)) {
+                    link = 'https://' + link;
+                    photoLinkInput.value = link;
+                }
+            }
+
+            applyUtmToForm(form);
+
             const submitBtn = form.querySelector('button[type="submit"]');
+            const formError = document.getElementById('formError');
             const originalBtnText = submitBtn.textContent;
+
+            submitting = true;
             submitBtn.disabled = true;
             submitBtn.textContent = 'Отправка...';
-            
-            setTimeout(function() {
-                modal.classList.add('active');
-                form.reset();
+            if (formError) formError.hidden = true;
+
+            // Возврат кнопки в исходное состояние — в любой ветке исхода
+            function resetSubmitState() {
+                submitting = false;
                 submitBtn.disabled = false;
                 submitBtn.textContent = originalBtnText;
-            }, 1200);
+            }
+
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: { 'Accept': 'application/json' }
+            })
+                .then(function(response) {
+                    // Тело может быть не-JSON (502 от прокси, пустой ответ) —
+                    // не роняем цепочку, статус всё равно проверим ниже.
+                    return response.json()
+                        .catch(function() { return {}; })
+                        .then(function(data) {
+                            return {
+                                ok: response.ok,
+                                status: response.status,
+                                data: data,
+                                // Запасной признак успеха: поле redirect Web3Forms
+                                // подставляет только при успешной приёме заявки. Если
+                                // нас редирекнуло на our thanks.html, а JSON не читнулся,
+                                // заявка всё равно принята — иначе клиент увидел бы
+                                // «ошибка» после реально ушедшего письма.
+                                onThanksPage: response.redirected === true &&
+                                    String(response.url || '').indexOf('/thanks.html') !== -1
+                            };
+                        });
+                })
+                .then(function(result) {
+                    if (!result.ok || !((result.data || {}).success === true || result.onThanksPage)) {
+                        throw new Error('HTTP ' + result.status + ' — ' +
+                            ((result.data && result.data.message) || 'сервис не принял заявку'));
+                    }
+
+                    // Успех подтверждён сервисом: только здесь ставим макро-цель
+                    // и показываем модалку. Без искусственных задержек.
+                    ymGoal('lead_form');
+                    form.reset();
+                    resetSubmitState();
+                    modal.classList.add('active');
+                })
+                .catch(function(error) {
+                    // Сетевая ошибка, таймаут, не-2xx или success:false —
+                    // заявка НЕ отправлена: говорим правду и даём прямые каналы.
+                    console.error('Form submit error:', error);
+                    resetSubmitState();
+                    if (formError) formError.hidden = false;
+                });
         });
         
         // Close modal
@@ -435,7 +581,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (priceEl && window.SITE_CONFIG.goldPrice585PerGram) {
             const formatted = new Intl.NumberFormat('ru-RU').format(window.SITE_CONFIG.goldPrice585PerGram);
-            priceEl.textContent = formatted + ' ₽/г';
+            priceEl.textContent = formatted + ' ₽/г с НДС';
         }
         if (noteEl && window.SITE_CONFIG.goldPriceNote) {
             noteEl.textContent = window.SITE_CONFIG.goldPriceNote;

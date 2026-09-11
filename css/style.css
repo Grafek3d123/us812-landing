@@ -332,6 +332,20 @@ textarea {
     line-height: 1.6;
 }
 
+/* Гео-уточнение: производство в СПб + работа дистанционно. Снимает главный
+   вопрос посетителя из региона (по семантике запросов их большинство). */
+.hero__geo {
+    display: inline-block;
+    font-size: 0.9rem;
+    color: var(--color-gold);
+    border: 1px solid rgba(201, 168, 76, 0.3);
+    border-radius: 999px;
+    padding: 0.4rem 0.9rem;
+    margin-bottom: var(--spacing-md);
+    line-height: 1.4;
+}
+
+
 .hero__cta {
     display: flex;
     flex-wrap: wrap;
@@ -385,6 +399,22 @@ textarea {
     color: var(--color-gold);
     opacity: 0.5;
 }
+
+/* Рейтинг-ссылка в строке триггеров: соцдоказательство рядом с CTA */
+.hero-triggers__rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--color-gold);
+    border-bottom: 1px dashed rgba(201, 168, 76, 0.45);
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.hero-triggers__rating:hover {
+    color: var(--color-white);
+    border-bottom-color: var(--color-white);
+}
+
 
 .hero__features {
     display: flex;
@@ -1043,6 +1073,44 @@ textarea {
     line-height: 1.6;
 }
 
+/* CTA-блок после этапов: снимает главное сомнение («а что я увижу до оплаты»)
+   и даёт второй по силе вход в VK — с приложением фото. */
+.how-we-work__cta {
+    margin-top: var(--spacing-2xl);
+    padding: var(--spacing-xl);
+    border: 1px solid rgba(201, 168, 76, 0.25);
+    border-radius: var(--border-radius);
+    background: rgba(201, 168, 76, 0.05);
+    text-align: center;
+}
+
+.how-we-work__cta-text {
+    color: var(--color-white);
+    font-size: 1.05rem;
+    line-height: 1.5;
+    margin-bottom: var(--spacing-lg);
+}
+
+.how-we-work__cta .btn {
+    min-width: 260px;
+}
+
+.how-we-work__cta-rating {
+    display: flex;
+    width: fit-content;
+    margin: var(--spacing-md) auto 0;
+    align-items: center;
+    gap: 6px;
+    color: var(--color-gray);
+    font-size: 0.85rem;
+    transition: color 0.2s ease;
+}
+
+.how-we-work__cta-rating:hover {
+    color: var(--color-white);
+}
+
+
 .how-we-work__master {
     margin-top: var(--spacing-3xl);
     text-align: center;
@@ -1281,13 +1349,19 @@ textarea {
     box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.1);
 }
 
-.form__input:invalid:not(:placeholder-shown) {
+/* Красная рамка валидации — только для обязательных полей (name, phone).
+   photo_link исключён сознательно: он необязательный, type="text" (нативная
+   url-валидация блокировала сабмит до JS-нормализации, см. комментарий в index.html),
+   и любое непустое значение уходит в письмо — подсвечивать его «ошибкой» неверно. */
+.form__input:invalid:not(:placeholder-shown):not(#photoLink) {
     border-color: #ff4444;
 }
 
-.form__input:valid:not(:placeholder-shown) {
+/* Золотая рамка «заполнено корректно» — тоже только для обязательных полей. */
+.form__input:valid:not(:placeholder-shown):not(#photoLink) {
     border-color: var(--color-gold);
 }
+
 
 .form__input--textarea {
     min-height: 120px;
@@ -1313,6 +1387,87 @@ textarea {
     color: var(--color-gray);
     line-height: 1.4;
 }
+
+/* Пояснение под полем: снимает страх «а что я отправляю» и подталкивает
+   приложить фото — мастеру сразу видно задачу. */
+.form__note {
+    font-size: 0.85rem;
+    color: var(--color-gray);
+    line-height: 1.5;
+    text-align: left;
+    margin-bottom: var(--spacing-md);
+}
+
+/* Подсказка под полем-ссылкой на фото референса */
+.form__hint {
+    font-size: 0.8rem;
+    color: var(--color-gray);
+    line-height: 1.45;
+    text-align: left;
+    margin-top: 0.5rem;
+}
+
+
+/* Страховка при сбое отправки: форма не должна выглядеть успешной, если письмо не ушло */
+.form__error {
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-md);
+    border: 1px solid rgba(201, 168, 76, 0.45);
+    border-radius: var(--border-radius);
+    background: rgba(201, 168, 76, 0.08);
+}
+
+.form__error[hidden] {
+    display: none;
+}
+
+.form__error-title {
+    font-size: 0.9rem;
+    color: var(--color-white);
+    margin-bottom: var(--spacing-sm);
+}
+
+.form__error-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    justify-content: center;
+}
+
+.form__error-links .btn {
+    padding: 0.6rem 1.25rem;
+    font-size: 0.85rem;
+}
+
+/* Быстрые мессенджеры под формой — альтернатива ожиданию звонка */
+.form__alt {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: var(--spacing-md);
+    font-size: 0.85rem;
+    color: var(--color-gray);
+}
+
+.form__alt-link {
+    color: var(--color-gold);
+    border-bottom: 1px solid rgba(201, 168, 76, 0.35);
+    transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+/* Подпись отделена от ссылок, чтобы не выглядела кликабельной */
+.form__alt-label {
+    color: var(--color-gray);
+}
+
+
+.form__alt-link:hover {
+    color: var(--color-white);
+    border-bottom-color: var(--color-white);
+}
+
 
 /* ===== Contacts Section ===== */
 .contacts {
@@ -1669,6 +1824,42 @@ textarea {
     line-height: 1.6;
 }
 
+/* Запасные каналы после отправки заявки: клиент уже «тёплый», даём ему
+   способ написать сразу вместо ожидания звонка. */
+.modal__alt {
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid rgba(201, 168, 76, 0.15);
+}
+
+.modal__alt-title {
+    font-size: 0.9rem;
+    color: var(--color-gray-light);
+    margin-bottom: var(--spacing-md);
+}
+
+.modal__alt-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-sm);
+}
+
+.modal__alt-link {
+    padding: 0.5rem 1rem;
+    border: 1px solid rgba(201, 168, 76, 0.3);
+    border-radius: var(--border-radius);
+    color: var(--color-gold);
+    font-size: 0.85rem;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.modal__alt-link:hover {
+    background: var(--color-gold);
+    color: var(--color-black);
+}
+
+
 /* ===== Mobile Menu ===== */
 @media (min-width: 768px) {
     .header__nav {
@@ -1842,6 +2033,16 @@ textarea {
         justify-content: center;
     }
 }
+
+/* ===== Header: дополнительный пункт меню =====
+   Ссылка «Ваш металл» появляется только на десктопе: в диапазоне 768–1023
+   горизонтальное меню уже заполнено, восьмой пункт не влезает. */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .header__link--wide {
+        display: none;
+    }
+}
+
 
 /* ===== Dework (Client's Metal) Section ===== */
 .dework {
@@ -2085,6 +2286,16 @@ textarea {
     color: var(--color-gray);
     margin-bottom: var(--spacing-md);
 }
+
+/* Две кнопки в FAQ: форма — для готового к заявке, VK — для того,
+   у кого остался вопрос (скролл к форме тоже даёт calc_click) */
+.faq__cta-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-md);
+}
+
 .animate-on-scroll {
     opacity: 0;
     transform: translateY(30px);
