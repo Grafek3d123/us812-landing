@@ -1536,6 +1536,66 @@ textarea {
     color: var(--color-gold-light);
 }
 
+/* ===== Sticky CTA (mobile) ===== */
+/* При видимом cookie-баннере JS поднимает панель на его высоту (--sticky-cta-offset) */
+.sticky-cta {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: var(--sticky-cta-offset, 0px);
+    display: flex;
+    gap: var(--spacing-xs);
+    padding: 8px 12px;
+    padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(201, 168, 76, 0.2);
+    z-index: 2500;
+    transform: translateY(200%);
+    transition: transform var(--transition-normal), bottom var(--transition-normal);
+}
+
+.sticky-cta.visible {
+    transform: translateY(0);
+}
+
+.sticky-cta__btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 12px 8px;
+    border-radius: var(--border-radius);
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity var(--transition-fast);
+}
+
+.sticky-cta__btn:active {
+    opacity: 0.8;
+}
+
+.sticky-cta__btn--call {
+    background: var(--color-gold-gradient);
+    color: var(--color-black);
+}
+
+.sticky-cta__btn--vk {
+    background: transparent;
+    color: var(--color-gold);
+    border: 1px solid rgba(201, 168, 76, 0.5);
+}
+
+/* Панель нужна только на мобильных */
+@media (min-width: 768px) {
+    .sticky-cta {
+        display: none;
+    }
+}
+
 /* ===== Modal ===== */
 .modal {
     display: none;

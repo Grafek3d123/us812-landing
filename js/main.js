@@ -78,6 +78,67 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // ===== Sticky CTA (mobile) =====
+    // Показ после ~1 экрана скролла, скрытие пока секция #form в вьюпорте.
+    // Конфликт с cookie-баннером: панель поднимается на его высоту,
+    // отслеживается через MutationObserver (баннер показывается с задержкой).
+    const stickyCta = document.getElementById('stickyCta');
+
+    if (stickyCta) {
+        let formInView = false;
+        let stickyTicking = false;
+
+        function updateStickyCtaVisibility() {
+            // На десктопе панель скрыта через CSS
+            if (window.innerWidth >= 768) {
+                stickyCta.classList.remove('visible');
+                return;
+            }
+            const scrolledEnough = window.pageYOffset > window.innerHeight * 0.8;
+            stickyCta.classList.toggle('visible', scrolledEnough && !formInView);
+        }
+
+        function updateStickyCtaOffset() {
+            if (!cookieBanner) return;
+            const offset = cookieBanner.classList.contains('visible') ? cookieBanner.offsetHeight : 0;
+            stickyCta.style.setProperty('--sticky-cta-offset', offset + 'px');
+        }
+
+        // Скрытие у секции формы заявки
+        const formSection = document.getElementById('form');
+        if (formSection && 'IntersectionObserver' in window) {
+            const formCtaObserver = new IntersectionObserver(function(entries) {
+                formInView = entries[0].isIntersecting;
+                updateStickyCtaVisibility();
+            }, { threshold: 0.2 });
+            formCtaObserver.observe(formSection);
+        }
+
+        // Показ по скроллу (throttle через requestAnimationFrame)
+        window.addEventListener('scroll', function() {
+            if (!stickyTicking) {
+                window.requestAnimationFrame(function() {
+                    updateStickyCtaVisibility();
+                    stickyTicking = false;
+                });
+                stickyTicking = true;
+            }
+        });
+
+        // Высота cookie-баннера меняется при показе/скрытии
+        if (cookieBanner && 'MutationObserver' in window) {
+            const cookieCtaObserver = new MutationObserver(updateStickyCtaOffset);
+            cookieCtaObserver.observe(cookieBanner, { attributes: true, attributeFilter: ['class'] });
+        }
+        window.addEventListener('resize', function() {
+            updateStickyCtaOffset();
+            updateStickyCtaVisibility();
+        });
+
+        // Начальное состояние (например, перезагрузка со скроллом)
+        updateStickyCtaVisibility();
+    }
+
     // ===== Smooth Scroll =====
     const scrollButtons = document.querySelectorAll('[data-scroll]');
     scrollButtons.forEach(function(btn) {
