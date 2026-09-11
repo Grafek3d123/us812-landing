@@ -1782,6 +1782,249 @@ textarea {
         justify-content: center;
     }
 }
+
+/* ===== Dework (Client's Metal) Section ===== */
+.dework {
+    padding: var(--spacing-3xl) 0;
+    background: var(--color-black);
+}
+
+.dework__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xl);
+    align-items: start;
+}
+
+.dework__content {
+    display: grid;
+    gap: var(--spacing-lg);
+}
+
+.dework-item {
+    display: flex;
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg);
+    background: rgba(201, 168, 76, 0.04);
+    border: 1px solid rgba(201, 168, 76, 0.12);
+    border-radius: var(--border-radius-lg);
+    transition: border-color var(--transition-normal);
+}
+
+.dework-item:hover {
+    border-color: rgba(201, 168, 76, 0.4);
+}
+
+.dework-item__icon {
+    flex-shrink: 0;
+}
+
+.dework-item__title {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-gold);
+    margin-bottom: 0.5rem;
+}
+
+.dework-item__text {
+    color: var(--color-gray-light);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.dework__aside {
+    position: relative;
+}
+
+.dework__price-card {
+    background: linear-gradient(160deg, rgba(201, 168, 76, 0.12) 0%, rgba(201, 168, 76, 0.04) 100%);
+    border: 1px solid rgba(201, 168, 76, 0.35);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-xl);
+    text-align: center;
+}
+
+.dework__price-label {
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 0.8rem;
+    color: var(--color-gray);
+    margin-bottom: var(--spacing-sm);
+}
+
+.dework__price-value {
+    font-family: var(--font-heading);
+    font-size: 3.2rem;
+    font-weight: 700;
+    color: var(--color-gold);
+    line-height: 1;
+    margin-bottom: var(--spacing-sm);
+}
+
+.dework__price-note {
+    color: var(--color-gray-light);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.dework__divider {
+    border: none;
+    border-top: 1px solid rgba(201, 168, 76, 0.25);
+    margin: var(--spacing-lg) 0;
+}
+
+.dework__facts {
+    list-style: none;
+    text-align: left;
+    margin-bottom: var(--spacing-lg);
+}
+
+.dework__facts li {
+    position: relative;
+    padding-left: 1.6rem;
+    margin-bottom: 0.6rem;
+    color: var(--color-gray-light);
+    font-size: 0.92rem;
+    line-height: 1.5;
+}
+
+.dework__facts li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.45rem;
+    width: 0.55rem;
+    height: 0.55rem;
+    background: var(--color-gold);
+    transform: rotate(45deg);
+}
+
+.dework__gold-price {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    padding: var(--spacing-md) var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+    background: rgba(201, 168, 76, 0.07);
+    border: 1px solid rgba(201, 168, 76, 0.22);
+    border-radius: var(--border-radius);
+}
+
+.dework__gold-price-label {
+    font-size: 0.85rem;
+    color: var(--color-gray);
+}
+
+.dework__gold-price-value {
+    font-family: var(--font-heading);
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--color-gold);
+    line-height: 1.1;
+}
+
+.dework__gold-price-note {
+    font-size: 0.75rem;
+    color: var(--color-gray);
+    font-style: italic;
+}
+
+.dework__price-card .btn {
+    width: 100%;
+}
+
+@media (min-width: 1024px) {
+    .dework__grid {
+        grid-template-columns: 1.6fr 1fr;
+        gap: var(--spacing-3xl);
+    }
+    
+    .dework__aside {
+        position: sticky;
+        top: 100px;
+    }
+}
+
+/* ===== FAQ Section ===== */
+.faq {
+    padding: var(--spacing-3xl) 0;
+    background: var(--color-black);
+}
+
+.faq__list {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    border-bottom: 1px solid rgba(201, 168, 76, 0.15);
+}
+
+.faq-item:first-child {
+    border-top: 1px solid rgba(201, 168, 76, 0.15);
+}
+
+.faq-item__question {
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md) 0.5rem;
+    text-align: left;
+    color: var(--color-white);
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 600;
+    transition: color var(--transition-fast);
+}
+
+.faq-item__question:hover {
+    color: var(--color-gold);
+}
+
+.faq-item__arrow {
+    flex-shrink: 0;
+    color: var(--color-gold);
+    transition: transform var(--transition-normal);
+}
+
+.faq-item.active .faq-item__arrow {
+    transform: rotate(180deg);
+}
+
+.faq-item__answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s ease;
+}
+
+.faq-item.active .faq-item__answer {
+    max-height: 400px;
+}
+
+.faq-item__answer p {
+    padding: 0 0.5rem var(--spacing-md);
+    color: var(--color-gray-light);
+    line-height: 1.7;
+    font-size: 0.98rem;
+}
+
+.faq__cta {
+    text-align: center;
+    margin-top: var(--spacing-xl);
+}
+
+.faq__cta-text {
+    color: var(--color-gray);
+    margin-bottom: var(--spacing-md);
+}
 .animate-on-scroll {
     opacity: 0;
     transform: translateY(30px);

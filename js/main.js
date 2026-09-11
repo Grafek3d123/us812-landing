@@ -342,5 +342,44 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // ===== FAQ Accordion =====
+    const faqItems = document.querySelectorAll('.faq-item');
+
+    faqItems.forEach(function(item) {
+        const question = item.querySelector('.faq-item__question');
+        if (!question) return;
+
+        question.addEventListener('click', function() {
+            const isOpen = item.classList.contains('active');
+
+            // Close all other items
+            faqItems.forEach(function(other) {
+                other.classList.remove('active');
+                const q = other.querySelector('.faq-item__question');
+                if (q) q.setAttribute('aria-expanded', 'false');
+            });
+
+            // Toggle current
+            if (!isOpen) {
+                item.classList.add('active');
+                question.setAttribute('aria-expanded', 'true');
+            }
+        });
+    });
+
+    // ===== Gold Price (config-driven) =====
+    if (window.SITE_CONFIG) {
+        const priceEl = document.getElementById('goldPrice585');
+        const noteEl = document.getElementById('goldPriceNote');
+
+        if (priceEl && window.SITE_CONFIG.goldPrice585PerGram) {
+            const formatted = new Intl.NumberFormat('ru-RU').format(window.SITE_CONFIG.goldPrice585PerGram);
+            priceEl.textContent = formatted + ' ₽/г';
+        }
+        if (noteEl && window.SITE_CONFIG.goldPriceNote) {
+            noteEl.textContent = window.SITE_CONFIG.goldPriceNote;
+        }
+    }
+
     console.log('ЮС 812 — Ювелирная студия. Сайт загружен успешно.');
 });
