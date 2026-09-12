@@ -42,6 +42,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Цели с кнопок/ссылок, размеченных data-goal (основной и вторичный CTA Hero).
+    // Отдельный обработчик, а не расширение LINK_GOALS: primary CTA — это button
+    // со скроллом к форме, он не попадает под селекторы ссылок выше.
+    // calc_click продолжит считаться параллельно — старая воронка не ломается.
+    document.addEventListener('click', function(e) {
+        const el = e.target && e.target.closest ? e.target.closest('[data-goal]') : null;
+        if (!el) return;
+        const goal = el.getAttribute('data-goal');
+        if (goal) ymGoal(goal);
+    });
+
     // ===== UTM (first-touch) =====
     // Метки сохраняются в sessionStorage и подставляются в скрытые поля формы:
     // в письме Web3Forms видно, из какой кампании пришёл лид.
@@ -115,8 +126,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         // Close menu on window resize (if desktop)
+        // 1024, а не 768: горизонтальное меню включается с 1024px (см. css/style.css)
         window.addEventListener('resize', function() {
-            if (window.innerWidth >= 768) {
+            if (window.innerWidth >= 1024) {
                 burger.classList.remove('active');
                 nav.classList.remove('active');
             }
@@ -510,44 +522,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // ===== Counter Animation =====
-    function animateCounter(element, target, duration) {
-        let start = 0;
-        const increment = target / (duration / 16);
-        
-        function step() {
-            start += increment;
-            if (start < target) {
-                element.textContent = Math.floor(start);
-                requestAnimationFrame(step);
-            } else {
-                element.textContent = target;
-            }
-        }
-        
-        step();
-    }
-
-    // Observe hero features for counter animation
-    const heroFeatures = document.querySelectorAll('.hero__feature-number');
-    
-    if ('IntersectionObserver' in window) {
-        const featureObserver = new IntersectionObserver(function(entries) {
-            entries.forEach(function(entry) {
-                if (entry.isIntersecting) {
-                    // Add animation class
-                    entry.target.style.opacity = '1';
-                    featureObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.5 });
-        
-        heroFeatures.forEach(function(feature) {
-            feature.style.opacity = '0';
-            feature.style.transition = 'opacity 0.5s ease';
-            featureObserver.observe(feature);
-        });
-    }
+    // Блок цифр в Hero («30 лет / 1000+ / 1 год») убран из разметки 12.09.2026:
+    // он дублировал секцию «Почему выбирают нас» и раздувал первый экран.
+    // Вместе с ним убраны счётчик-анимация и IntersectionObserver для этих цифр.
 
     // ===== FAQ Accordion =====
     const faqItems = document.querySelectorAll('.faq-item');

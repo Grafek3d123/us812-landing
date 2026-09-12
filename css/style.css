@@ -35,6 +35,10 @@
     --container-max: 1200px;
     --border-radius: 8px;
     --border-radius-lg: 12px;
+    /* Высота шапки: нужна, чтобы мобильное меню и отступ Hero были привязаны
+       к фактической высоте header, а не к магической цифре. */
+    --header-h: 60px;
+
     
     /* Transitions */
     --transition-fast: 0.2s ease;
@@ -191,8 +195,9 @@ textarea {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--spacing-sm) 0;
-    gap: var(--spacing-md);
+    min-height: var(--header-h);
+    padding: 0.5rem 0;
+    gap: var(--spacing-sm);
 }
 
 .header__logo {
@@ -200,6 +205,7 @@ textarea {
     flex-direction: row;
     align-items: center;
     gap: 12px;
+    flex-shrink: 0;
 }
 
 .header__logo-sub {
@@ -208,6 +214,7 @@ textarea {
     letter-spacing: 2px;
     text-transform: uppercase;
     line-height: 1;
+    white-space: nowrap;
 }
 
 .header__logo-sub span {
@@ -216,13 +223,14 @@ textarea {
 
 .header__nav {
     display: none;
-    gap: var(--spacing-lg);
+    gap: clamp(0.75rem, 1.8vw, 1.5rem);
 }
 
 .header__link {
     font-size: 0.9rem;
     color: var(--color-gray-light);
     transition: color var(--transition-fast);
+    white-space: nowrap;
 }
 
 .header__link:hover {
@@ -232,13 +240,17 @@ textarea {
 .header__contacts {
     display: flex;
     align-items: center;
-    gap: var(--spacing-md);
+    gap: var(--spacing-sm);
+    flex-shrink: 0;
 }
 
 .header__phone {
     font-size: 0.9rem;
     color: var(--color-white);
     font-weight: 500;
+    /* Номер должен читаться одной строкой: перенос «+7 (921) / 907- / 71-66»
+       превращает телефон в мусор и убивает кликабельность. */
+    white-space: nowrap;
 }
 
 .header__phone:hover {
@@ -249,8 +261,12 @@ textarea {
     display: flex;
     flex-direction: column;
     gap: 5px;
-    padding: 5px;
+    padding: 9px 8px;
+    border: 1px solid rgba(201, 168, 76, 0.35);
+    border-radius: var(--border-radius);
+    background: rgba(201, 168, 76, 0.06);
 }
+
 
 .burger span {
     display: block;
@@ -275,10 +291,12 @@ textarea {
 /* ===== Hero Section ===== */
 .hero {
     position: relative;
-    min-height: 100vh;
+    /* На мобильном высота по контенту: 100vh + 5 блоков давали первый экран,
+       где CTA не влезал без скролла. На десктопе прежнее поведение. */
+    min-height: auto;
     display: flex;
     align-items: center;
-    padding: calc(80px + var(--spacing-xl)) 0 var(--spacing-xl);
+    padding: calc(var(--header-h) + 1.25rem) 0 1.75rem;
     overflow: hidden;
     z-index: 10;
 }
@@ -310,81 +328,138 @@ textarea {
     z-index: 2;
 }
 
+/* На узком экране текст лежит на фотографии почти вплотную — оверлей усилен,
+   чтобы читаемость не зависела от того, какая часть фона попала в вьюпорт. */
+@media (max-width: 767px) {
+    .hero__bg::after {
+        background: linear-gradient(180deg, rgba(10, 10, 10, 0.95) 0%, rgba(10, 10, 10, 0.88) 45%, rgba(10, 10, 10, 0.95) 100%);
+    }
+
+    /* Гео-строка на мобильном занимает 2–3 строки: пилюля с border-radius
+       на многострочном тексте выглядит сломанной, поэтому здесь она
+       превращается в строку с золотой чертой слева. */
+    .hero__geo {
+        display: block;
+        background: none;
+        border: none;
+        border-left: 2px solid rgba(201, 168, 76, 0.6);
+        border-radius: 0;
+        padding: 0.15rem 0 0.15rem 0.7rem;
+    }
+}
+
+
 .hero__content {
     position: relative;
     z-index: 2;
     max-width: 700px;
 }
 
+
+
 .hero__title {
     font-family: var(--font-heading);
-    font-size: 2.25rem;
+    /* Читаемость важнее декоративного масштаба: на мобильном H1 уменьшен
+       примерно на 15% и переносится естественным образом (br скрыт до 480px). */
+    font-size: 1.9rem;
     font-weight: 700;
     color: var(--color-white);
-    line-height: 1.2;
-    margin-bottom: var(--spacing-md);
+    line-height: 1.18;
+    letter-spacing: -0.01em;
+    margin-bottom: var(--spacing-sm);
+}
+
+.hero__title-br {
+    display: none;
 }
 
 .hero__subtitle {
-    font-size: 1.125rem;
-    color: var(--color-gray);
-    margin-bottom: var(--spacing-xl);
-    line-height: 1.6;
+    font-size: 1.05rem;
+    /* Было #888 на фотографии — контраст на грани WCAG для обычного текста. */
+    color: var(--color-gray-light);
+    margin-bottom: var(--spacing-sm);
+    line-height: 1.55;
+    max-width: 34ch;
 }
 
 /* Гео-уточнение: производство в СПб + работа дистанционно. Снимает главный
    вопрос посетителя из региона (по семантике запросов их большинство). */
 .hero__geo {
     display: inline-block;
-    font-size: 0.9rem;
-    color: var(--color-gold);
+    font-size: 0.88rem;
+    color: var(--color-gold-light);
+    background: rgba(10, 10, 10, 0.5);
     border: 1px solid rgba(201, 168, 76, 0.3);
     border-radius: 999px;
-    padding: 0.4rem 0.9rem;
-    margin-bottom: var(--spacing-md);
+    padding: 0.35rem 0.9rem;
+    margin-bottom: var(--spacing-sm);
     line-height: 1.4;
 }
 
-
-.hero__cta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-md);
-    margin-bottom: var(--spacing-2xl);
+/* Главная мысль для региона: в Петербург ехать не нужно */
+.hero__geo strong {
+    color: var(--color-white);
+    font-weight: 600;
 }
 
-.hero__whatsapp {
-    background: #0077FF;
-    color: white;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.875rem 2rem;
-    font-family: var(--font-heading);
-    font-weight: 600;
+/* Цена на первом экране = фильтр аудитории + признак честности.
+    Не крупный акцент, а строка под оффером. */
+.hero__price {
     font-size: 0.95rem;
-    border-radius: var(--border-radius);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    gap: 0.5rem;
-    width: 100%;
+    color: var(--color-gray-light);
+    margin-bottom: var(--spacing-md);
+    line-height: 1.45;
+}
+
+.hero__price strong {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--color-gold);
+}
+
+/* CTA-иерархия: одна доминирующая кнопка + подпись срока ответа +
+   вторичная текстовая ссылка на VK (не конкурирует с primary цветом и размером). */
+.hero__cta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.55rem;
+    margin-bottom: var(--spacing-md);
 }
 
 .hero__cta .btn--gold {
     width: 100%;
 }
 
-.hero__whatsapp:hover {
-    background: #0055CC;
+.hero__cta-note {
+    font-size: 0.82rem;
+    color: var(--color-gray-light);
+    line-height: 1.4;
+}
+
+.hero__vk {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.92rem;
+    color: var(--color-gold);
+    border-bottom: 1px dashed rgba(201, 168, 76, 0.45);
+    padding-bottom: 1px;
+    transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.hero__vk:hover {
+    color: var(--color-white);
+    border-bottom-color: var(--color-white);
 }
 
 .hero-triggers {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--spacing-sm);
-    color: var(--color-gray);
-    font-size: 0.85rem;
-    margin-top: var(--spacing-md);
+    gap: 0.4rem 0.5rem;
+    color: var(--color-gray-light);
+    font-size: 0.82rem;
     align-items: center;
 }
 
@@ -395,7 +470,8 @@ textarea {
 }
 
 .hero-triggers span:nth-child(2),
-.hero-triggers span:nth-child(4) {
+.hero-triggers span:nth-child(4),
+.hero-triggers span:nth-child(6) {
     color: var(--color-gold);
     opacity: 0.5;
 }
@@ -415,31 +491,6 @@ textarea {
     border-bottom-color: var(--color-white);
 }
 
-
-.hero__features {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-xl);
-}
-
-.hero__feature {
-    display: flex;
-    flex-direction: column;
-}
-
-.hero__feature-number {
-    font-family: var(--font-heading);
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--color-gold);
-    line-height: 1;
-}
-
-.hero__feature-text {
-    font-size: 0.85rem;
-    color: var(--color-gray);
-    margin-top: 0.25rem;
-}
 
 /* ===== Benefits Section ===== */
 .benefits {
@@ -1860,27 +1911,52 @@ textarea {
 }
 
 
-/* ===== Mobile Menu ===== */
-@media (min-width: 768px) {
+/* ===== Mobile Menu =====
+   Горизонтальное меню включаем только с 1024px: контейнер capped 1200px,
+   и в 768–1023 восемь пунктов + телефон + CTA физически не уживаются
+   (замерено: 1301px контента при 1152px доступных → переполнение шапки).
+   Ниже 1024 — бургер, в нём все пункты + CTA. */
+@media (min-width: 1024px) {
     .header__nav {
         display: flex;
     }
-    
+
     .burger {
+        display: none;
+    }
+
+    /* Пункт «Показать идею мастеру» живёт только в бургер-меню: в горизонтальном
+       меню уже есть кнопка CTA в правой части шапки. */
+    .header__link--form {
+        display: none;
+    }
+
+    /* Второстепенные пункты (Преимущества / Вопросы / Контакты) скрыты в
+       горизонтальном меню: они дублируются в футере и доступны скроллом,
+       зато телефон и CTA не переносятся. */
+    .header__link--secondary {
         display: none;
     }
 }
 
-@media (max-width: 767px) {
+/* Кнопка CTA в шапке — только там, где для неё есть место (≥1200px).
+   Ниже — она есть в бургер-меню и в Hero. */
+@media (max-width: 1199px) {
+    .header__contacts .btn {
+        display: none;
+    }
+}
+
+@media (max-width: 1023px) {
     .header__nav {
         position: fixed;
-        top: 70px;
+        top: var(--header-h);
         left: 0;
         right: 0;
         background: rgba(10, 10, 10, 0.98);
         flex-direction: column;
-        padding: var(--spacing-xl);
-        gap: var(--spacing-md);
+        padding: var(--spacing-lg) var(--spacing-md);
+        gap: var(--spacing-sm);
         transform: translateY(-100%);
         opacity: 0;
         visibility: hidden;
@@ -1890,8 +1966,11 @@ textarea {
         z-index: 1002;
         width: 100%;
         pointer-events: auto;
+        max-height: calc(100vh - var(--header-h));
+        max-height: calc(100dvh - var(--header-h));
+        overflow-y: auto;
     }
-    
+
     .header__nav.active {
         display: flex;
         transform: translateY(0);
@@ -1899,14 +1978,28 @@ textarea {
         visibility: visible;
         pointer-events: auto;
     }
-    
-    .header__contacts .btn {
+
+    .header__link--form {
+        color: var(--color-gold);
+        font-weight: 600;
+    }
+}
+
+@media (max-width: 767px) {
+    /* Логотип-знак (ЮС 812) самодостаточен: подпись съедала место,
+       из-за чего телефон переносился по частям. */
+    .header__logo-sub {
         display: none;
     }
-    
+
+    .header__phone {
+        font-size: 0.85rem;
+    }
+
     .services__grid {
         grid-template-columns: 1fr;
     }
+
     
     .service-card .btn {
         border-radius: 0;
@@ -1926,40 +2019,94 @@ textarea {
     }
 }
 
+
 /* ===== Responsive Design ===== */
 @media (min-width: 768px) {
     .section-title {
         font-size: 2.5rem;
     }
-    
-    .hero__title {
-        font-size: 3rem;
+
+    .hero {
+        min-height: 100vh;
+        padding: calc(var(--header-h) + 3rem) 0 var(--spacing-xl);
     }
+
+    /* 700px не хватало первой строке H1 («Мужские печатки и перстни» = 690px
+       при 46.4px) — заголовок разбивался на 3 строки вместо двух. */
+    .hero__content {
+        max-width: 760px;
+    }
+
+
+    .hero__title {
+        font-size: 2.6rem;
+        line-height: 1.15;
+        margin-bottom: var(--spacing-md);
+    }
+
+    .hero__title-br {
+        display: inline;
+    }
+
+    .hero__subtitle {
+        font-size: 1.125rem;
+        max-width: 40ch;
+        margin-bottom: var(--spacing-md);
+    }
+
+    /* На десктопе кнопка не растягивается на всю колонку 700px:
+       доминирует размером, а не шириной плашки. */
+    .hero__cta .btn--gold {
+        width: auto;
+        max-width: 420px;
+    }
+
+    .hero__cta {
+        margin-bottom: var(--spacing-xl);
+    }
+
+    .hero__price {
+        margin-bottom: var(--spacing-lg);
+    }
+
+    /* На десктопе гео-строка умещается в одну линию (561px при колонке 760px),
+       перенос из <br> нужен только мобильной версии. */
+    .hero__geo br {
+        display: none;
+    }
+
+
     
     .benefits__grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
     
     .services__grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
     
     .service-card {
         flex: 1 1 calc(33.333% - var(--spacing-xl));
-        min-width: 280px;
+        /* Было min-width: 280px: в grid-контейнере flex-свойства не работают,
+           а min-width ломал сетку — на 768–1023 страница получала горизонтальный
+           скролл до 293px (замер Playwright на live-сайте). */
+        min-width: 0;
     }
     
     .portfolio__grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
     
+    /* 4 колонки на 768 px не умещались (min-content текста растягивал сетку).
+       Четыре колонки — с 1024px, ниже две. */
     .how-we-work__steps {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
     
     .reviews__grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
+
     
     .contacts__grid {
         grid-template-columns: 1fr 1fr;
@@ -1986,16 +2133,25 @@ textarea {
     }
     
     .hero__title {
-        font-size: 3.5rem;
+        /* 3.25rem не влезал в 700px колонку двумя строками (замер: 3 строки).
+           2.9rem даёт ровно две строки с переносом по <br>. */
+        font-size: 2.9rem;
     }
+
+
     
     .benefits__grid {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(4, minmax(0, 1fr));
     }
     
     .portfolio__grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
+    
+    .how-we-work__steps {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
     
     .footer__inner {
         flex-direction: row;
@@ -2020,28 +2176,33 @@ textarea {
     animation: fadeIn 0.8s ease-out;
 }
 
-/* ===== Responsive: Hero Buttons ===== */
-@media (max-width: 600px) {
-    .hero__cta {
-        flex-direction: column;
+/* ===== Responsive: Hero на очень узких экранах =====
+   360 px: заголовок и подпись уплотняются, чтобы primary CTA остался в первом экране. */
+@media (max-width: 400px) {
+    .hero__title {
+        font-size: 1.7rem;
     }
-    
-    .hero__btn--large,
-    .hero__whatsapp {
-        width: 100%;
-        text-align: center;
-        justify-content: center;
+
+    .hero__subtitle {
+        font-size: 1rem;
+    }
+
+    .hero__price {
+        font-size: 0.9rem;
+    }
+
+    .hero__cta .btn--gold {
+        padding: 1rem 1.25rem;
+        font-size: 0.95rem;
+        letter-spacing: 0.3px;
     }
 }
 
-/* ===== Header: дополнительный пункт меню =====
-   Ссылка «Ваш металл» появляется только на десктопе: в диапазоне 768–1023
-   горизонтальное меню уже заполнено, восьмой пункт не влезает. */
-@media (min-width: 768px) and (max-width: 1023px) {
-    .header__link--wide {
-        display: none;
-    }
-}
+
+/* ===== Header: история правила =====
+   Раньше «Ваш металл» скрывался в 768–1023 как единственный способ вписать
+   меню. Сейчас там бургер (см. Mobile Menu), поэтому точечные скрытия не нужны. */
+
 
 
 /* ===== Dework (Client's Metal) Section ===== */
@@ -2325,16 +2486,11 @@ textarea {
     }
 }
 
-/* ===== Responsive: Hero Buttons ===== */
-@media (max-width: 600px) {
-    .hero__cta {
-        flex-direction: column;
-    }
-    
-    .hero__btn--large,
-    .hero__whatsapp {
-        width: 100%;
-        text-align: center;
-        justify-content: center;
+/* ===== Mobile: тап-таргет вторичной ссылки VK =====
+   Вторичный CTA — текстовая ссылка, поэтому на мобильном ей добавляется
+   вертикальный padding: попадать должно пальцем, а не по 16 px строки. */
+@media (max-width: 767px) {
+    .hero__vk {
+        padding: 0.4rem 0;
     }
 }
