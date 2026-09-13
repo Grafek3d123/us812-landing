@@ -13,3 +13,6 @@ test-images.html
 assets/images/aboutMaster/*.md
 us812YandexDirectLandingAudit2.md
 mynotes.md
+
+# Результаты замеров hero (tools/hero_metrics.py): скриншоты и json
+tools/out/

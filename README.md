@@ -23,11 +23,15 @@ LandingAI/
 ├── js/
 │   ├── config.js           # ПРАВИТСЯ ВРУЧНУЮ: цена золота 585/999
 │   └── main.js             # Меню, формы, FAQ-аккордеон, маска телефона
+├── tools/
+│   └── hero_metrics.py     # Замер читаемости mobile hero (см. HERO-TUNING.md)
 ├── assets/images/
 │   ├── ring-1..6, best-1, george-1, topaz-1.jpg   # 9 фото работ (портфолио)
+│   ├── og-pechatka.jpg     # 1200×630 для og:image (мужская печатка)
 │   ├── aboutMaster/        # 3 фото мастера + interview.md
 │   └── reviews/            # 3 скриншота реальных отзывов
 ├── KODA.md                 # Контекст и правила проекта для AI-агента
+├── HERO-TUNING.md          # Как крутить яркость mobile hero и не уронить контраст
 ├── CRO-AUDIT-us812.md      # Аудит конверсии: что сделано, очередь работ
 ├── CHECKLIST-materials.md  # Чек-лист материалов от мастера
 └── ASKQUERY-FAQ-answers.md # Ответы для FAQ/dework (в .gitignore, не коммитить)
@@ -70,6 +74,15 @@ goldPriceNote: '…от 11.09.2026'  // дата актуальности в п�
 ### FAQ
 Вопросы — в секции `faq` (index.html), аккордеон работает из `main.js`
 (класс `active`). Первоисточник ответов — `ASKQUERY-FAQ-answers.md`.
+
+### Яркость фона в мобильном hero
+Две ручки в `css/style.css` (блок `@media (max-width: 767px)`): прозрачность
+вуали `.hero__bg::after` и `filter: brightness()` на `.hero__bg img`. крутить
+только с замером — иначе утонет контраст текста:
+```powershell
+python tools/hero_metrics.py            # pip install playwright pillow numpy
+```
+Пределы, опорные числа и рецепты отката — [`HERO-TUNING.md`](HERO-TUNING.md).
 
 ### Форма заявки (Web3Forms)
 Получатель письма задаётся на стороне Web3Forms и привязан к access key —
