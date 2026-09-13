@@ -3,7 +3,7 @@ KODA.md
 ASKQUERY-FAQ-answers.md
 CHECKLIST-materials.md
 us812YandexDirectLandingAudit1.md
-us812YandexDirectLandingAudit2.md
+assets/Koda_tasks
 
 # Локальные исходники и тесты
 logos.html
@@ -11,3 +11,5 @@ test-images.html
 
 # Исходники фото и интервью
 assets/images/aboutMaster/*.md
+us812YandexDirectLandingAudit2.md
+mynotes.md
