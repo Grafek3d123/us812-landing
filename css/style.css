@@ -486,7 +486,8 @@ textarea {
 
 .hero-triggers span:nth-child(2),
 .hero-triggers span:nth-child(4),
-.hero-triggers span:nth-child(6) {
+.hero-triggers span:nth-child(6),
+.hero-triggers span:nth-child(8) {
     color: var(--color-gold);
     opacity: 0.5;
 }
