@@ -19,6 +19,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <!-- LCP-приоритет: hero-фоновая картинка — крупнейший элемент первого экрана.
+         preload заставляет браузер качать её параллельно с CSS (иначе она ждёт
+         разбора стилей), fetchpriority на <img> подтверждает высший приоритет. -->
+    <link rel="preload" as="image" href="assets/images/ring-1.jpg" fetchpriority="high">
     <!-- Яндекс.Метрика -->
     <script type="text/javascript">
 (function(m,e,t,r,i,k,a){
@@ -113,14 +117,14 @@ ym(112416476, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLa
     <!-- Hero Section -->
     <section class="hero" id="hero">
         <div class="hero__bg">
-            <img src="assets/images/ring-1.jpg" alt="Мужская печатка на заказ" loading="eager">
+            <img src="assets/images/ring-1.jpg" alt="Мужская печатка на заказ" loading="eager" fetchpriority="high">
         </div>
         <div class="container">
             <div class="hero__content">
                 <h1 class="hero__title">Мужские печатки и перстни<br class="hero__title-br">на заказ по вашей идее</h1>
                 <p class="hero__geo">Производство — Санкт-Петербург.<br><strong>Работаем дистанционно по всей России</strong></p>
                 <p class="hero__subtitle">По фото, эскизу или описанию. Создадим индивидуальный дизайн — увидите будущую печатку в 3D-модели до начала изготовления.</p>
-                <p class="hero__price"><strong>Работа — от 50 000 ₽.</strong> Металл и камни рассчитываем отдельно</p>
+                <p class="hero__price"><strong>Работа — от 50 000 ₽.</strong> Расчёт по вашей идее — бесплатно, металл и камни считаем отдельно</p>
                 <div class="hero__cta">
                     <button class="btn btn--large btn--gold" data-scroll="form" data-goal="cta_primary_click">Показать идею мастеру</button>
                     <p class="hero__cta-note">Ответим в течение 30 минут в рабочее время (МСК)</p>
@@ -683,7 +687,7 @@ ym(112416476, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLa
         <div class="container">
             <div class="cta__inner">
                 <h2 class="cta__title">Покажите идею — рассчитаем стоимость</h2>
-                <p class="cta__subtitle">Достаточно имени и телефона. Ответим в течение 30 минут в рабочее время, назовём цену и покажем 3D-модель.</p>
+                <p class="cta__subtitle">Бесплатный расчёт по вашей идее: достаточно имени и телефона. Ответим в течение 30 минут в рабочее время, назовём цену и покажем 3D-модель.</p>
                 <form class="cta__form" id="contactForm" action="https://api.web3forms.com/submit" method="POST">
                     <!-- Web3Forms: access_key привязан к email получателя, письмо уходит на него -->
                     <input type="hidden" name="access_key" value="f586ab8b-9fe1-499e-a43d-fe0ee042d5d3">
